@@ -290,6 +290,57 @@ void checkCollisionWithMap(float Dx, float Dy)//ф-ци€ проверки столкновений с ка
 	}
 };
 
+class Bullet :public Entity{//класс пули
+public:
+	int direction;//направление пули
+	//всЄ так же, только вз€ли в конце состо€ние игрока (int dir) 
+	//дл€ задани€ направлени€ полЄта пули
+	Bullet(Image &image, float X, float Y, int W, int H, std::string  Name, int dir, bool check2) :Entity(image, X, Y, W, H, Name)
+	{
+		x = X+20;
+		y = Y+5;
+		direction = dir;
+		speed = 0.8;
+		w = h = 16;
+		life = true;
+		check = check2;
+		//выше инициализаци€ в конструкторе
+	};
+
+
+	void update(float time)
+	{
+		switch (direction)
+		{
+			case 0: dx = -speed; dy = 0;   break;// state = left
+			case 1: dx = speed; dy = 0;   break;// state = right
+			case 2: dx = 0; dy = -speed;   break;// state = up
+			case 3: dx = 0; dy = speed;   break;// state = down
+		}
+
+		if (life)
+		{
+			x += dx*time;//само движение пули по х
+			y += dy*time;//по у
+
+		if (x <= 0) x = 20;// задержка пули в левой стене, чтобы при проседании кадров она случайно не вылетела за предел карты и не было ошибки (сервер может тормозить!)
+		if (y <= 0) y = 20;
+
+		if (x >= 1280) x = 1260;// задержка пули в правой стене, чтобы при проседании кадров она случайно не вылетела за предел карты и не было ошибки (сервер может тормозить!)
+		if (y >= 704) y = 684;
+
+
+			for (int i = y / 32; i < (y + h) / 32; i++)//проходимс€ по элементам карты
+				for (int j = x / 32; j < (x + w) / 32; j++)
+				{
+					if (TileMap[i][j] == '0')//если элемент наш тайлик земли, то
+						life = false;// то пул€ умирает
+				}
+			sprite.setPosition(x + w / 2, y + h / 2);//задаетс€ позицию пули
+		}
+	}
+};
+
 int main()
 {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
@@ -304,17 +355,23 @@ int main()
 	Clock clock;
 	Clock gameTimeClock;//переменна€ игрового времени, будем здесь хранить врем€ игры 
 	int gameTime = 0;//объ€вили игровое врем€, инициализировали.
-
+	int delay = 0;
 	Image heroImage;
 	heroImage.loadFromFile("images/TankPlayer.png"); // загружаем изображение игрока
 
 	Image easyEnemyImage;
     easyEnemyImage.loadFromFile("images/TankEnemy.png"); // загружаем изображение врага
 
+	Image BulletImage;//изображение дл€ пули
+	BulletImage.loadFromFile("images/bullet.png");//загрузили картинку в объект изображени€
+
 	Player p(heroImage, 1100, 70, 70, 70, "Player1");//объект класса игрока
 
 	std::list<Entity*>  enemies; //список врагов
+	std::list<Entity*>  Bullets; //список пуль
 	std::list<Entity*>::iterator it;
+	std::list<Entity*>::iterator bullet;
+
 
 	const int ENEMY_COUNT = 7; //максимальное количество врагов в игре ¬ј∆Ќќ!
 	int enemiesCount = 0; //текущее количество врагов в игре
@@ -343,12 +400,68 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
+			//стрел€ем по нажатию клавиши "Space"
+			if ((event.type == sf::Event::KeyPressed) && (p.life == true))
+			{
+				if ((event.key.code == sf::Keyboard::Space))
+				{
+					Bullets.push_back(new Bullet(BulletImage, p.x, p.y, 16, 16, "Bullet", p.state, true));
+					
+				}
+			}
 		}
 
 		p.update(time); //оживл€ем объект УpФ класса УPlayerФ
+
 		for (it = enemies.begin(); it != enemies.end(); it++) 
         { 
 			(*it)->update(time); //запускаем метод update() 
+		}
+
+		delay = delay + 1;
+		if (delay == 500)
+		{
+			for (it = enemies.begin(); it != enemies.end(); it++)
+			{
+				if (rand() % 2 == 0)
+				{
+					Bullets.push_back(new Bullet(BulletImage, (*it)->x, (*it)->y, 16, 16, "Bullet", (*it)->state, false));
+				}
+			}
+			delay = 0;
+		}
+
+		//оживл€ем пули
+		for (it = Bullets.begin(); it != Bullets.end(); it++)
+		{
+			(*it)->update(time); //запускаем метод update()
+		}
+		//ѕровер€ем список на наличие "мертвых" пуль и удал€ем их
+		for (it = Bullets.begin(); it != Bullets.end(); )//говорим что проходимс€ от начала до конца
+		{// если этот объект мертв, то удал€ем его
+			if ((*it)-> life == false)	
+			{ 
+				it = Bullets.erase(it); 
+			} 
+			else  it++;//и идем курсором (итератором) к след объекту.		
+		}
+
+		for (bullet = Bullets.begin();  bullet!= Bullets.end(); bullet++)
+		{
+			for (it = enemies.begin(); it != enemies.end(); )
+			{//бежим по списку врагов
+				if (((*bullet)->getRect().intersects((*it)->getRect())) && ((*it)->name == "EasyEnemy") && ((*bullet)->check == true))
+				{
+					it = enemies.erase(it);
+					(*bullet)->life = false;
+				}
+				else it++;
+			}
+
+			if (p.getRect().intersects((*bullet)->getRect()) && ((*bullet)->check == false))
+			{
+				p.life = false;
+			}
 		}
 		window.clear();
 /////////////////////////////–исуем карту/////////////////////
@@ -367,6 +480,13 @@ int main()
 			if ((*it)->life) //если враги живы 
 			window.draw((*it)->sprite); //рисуем 
         }
+
+		//рисуем пули
+		for (it = Bullets.begin(); it != Bullets.end(); it++)
+		{
+			if ((*it)->life) //если пули живы
+				window.draw((*it)->sprite); //рисуем объекты
+		}
 		window.display();
 	}
 	return 0;
