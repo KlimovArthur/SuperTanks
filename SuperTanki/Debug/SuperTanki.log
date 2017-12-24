@@ -1,51 +1,12 @@
-﻿Построение начато 24.12.2017 22:03:55.
+﻿Построение начато 24.12.2017 22:13:13.
      1>Проект "C:\Users\Arthur\Desktop\SuperTanks\SuperTanks\SuperTanki\SuperTanki.vcxproj" в узле 2 (целевые объекты build).
      1>InitializeBuildStatus:
          Создание "Debug\SuperTanki.unsuccessfulbuild", так как было задано "AlwaysCreate".
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Arthur\Desktop\SuperTanks\SuperTanks\SFML-2.3.2\include" /ZI /nologo /W3 /WX- /Od /Oy- /D SFML_DYNAMIC /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
-         main.cpp
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(45): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(45): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(79): warning C4305: =: усечение из "double" к "float"
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(84): warning C4305: =: усечение из "double" к "float"
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(90): warning C4305: =: усечение из "double" к "float"
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(96): warning C4305: =: усечение из "double" к "float"
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(102): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(103): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(107): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(108): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(109): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(110): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(126): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(134): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(142): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(151): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(191): warning C4305: =: усечение из "double" к "float"
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(199): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(200): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(206): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(206): warning C4305: =: усечение из "double" к "float"
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(211): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(211): warning C4305: =: усечение из "double" к "float"
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(216): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(216): warning C4305: =: усечение из "double" к "float"
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(221): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(221): warning C4305: =: усечение из "double" к "float"
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(240): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(250): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(260): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(270): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(324): warning C4244: инициализация: преобразование "int" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(333): warning C4244: инициализация: преобразование "sf::Int64" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(360): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-     1>c:\users\arthur\desktop\supertanks\supertanks\supertanki\main.cpp(360): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+         Для всех выходных данных обновления не требуется.
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Arthur\Desktop\SuperTanks\SuperTanks\Debug\SuperTanki.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Arthur\Desktop\SuperTanks\SuperTanks\SFML-2.3.2\lib" "sfml-audio-d.lib" "sfml-network-d.lib" "sfml-graphics-d.lib" "sfml-system-d.lib" "sfml-window-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\SuperTanki.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Arthur\Desktop\SuperTanks\SuperTanks\Debug\SuperTanki.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Arthur\Desktop\SuperTanks\SuperTanks\Debug\SuperTanki.lib" /MACHINE:X86 Debug\main.obj
-     1>main.obj : warning LNK4075: не учитывается "/EDITANDCONTINUE" из-за спецификации "/INCREMENTAL:NO"
+         Для всех выходных данных обновления не требуется.
          SuperTanki.vcxproj -> C:\Users\Arthur\Desktop\SuperTanks\SuperTanks\Debug\SuperTanki.exe
-       Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\Arthur\Desktop\SuperTanks\SuperTanks\Debug\SuperTanki.exe;#1" /manifest Debug\SuperTanki.exe.intermediate.manifest
        FinalizeBuildStatus:
          Файл "Debug\SuperTanki.unsuccessfulbuild" удаляется.
          Обращение к "Debug\SuperTanki.lastbuildstate".
@@ -53,4 +14,4 @@
 
 Построение успешно завершено.
 
-Затраченное время: 00:00:02.21
+Затраченное время: 00:00:00.03
