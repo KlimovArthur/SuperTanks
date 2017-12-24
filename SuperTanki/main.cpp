@@ -307,24 +307,27 @@ int main()
 
 	Image heroImage;
 	heroImage.loadFromFile("images/TankPlayer.png"); // загружаем изображение игрока
+
 	Image easyEnemyImage;
     easyEnemyImage.loadFromFile("images/TankEnemy.png"); // загружаем изображение врага
+
 	Player p(heroImage, 1100, 70, 70, 70, "Player1");//объект класса игрока
+
 	std::list<Entity*>  enemies; //список врагов
 	std::list<Entity*>::iterator it;
-	const int ENEMY_COUNT = 7; //максимальное количество врагов в игре ¬ј∆Ќќ!
- int enemiesCount = 0; //текущее количество врагов в игре
-	for (int i = 0; i < ENEMY_COUNT; i++)
- {
-  float xr = 150 + rand() % 100;
-  float yr = 480;
-   // случайна€ координата врага на поле игры по оси УxФ
- 
 
-  //создаем врагов и помещаем в список
-  enemies.push_back(new Enemy(easyEnemyImage, xr, yr, 96, 96, "EasyEnemy"));
-  enemiesCount += 1; //увеличили счЄтчик врагов
- }
+	const int ENEMY_COUNT = 7; //максимальное количество врагов в игре ¬ј∆Ќќ!
+	int enemiesCount = 0; //текущее количество врагов в игре
+
+	for (int i = 0; i < ENEMY_COUNT; i++)
+	{
+		float xr = 150 + rand() % 100;
+		float yr = 480;
+		// случайна€ координата врага на поле игры по оси УxФ
+		//создаем врагов и помещаем в список
+		enemies.push_back(new Enemy(easyEnemyImage, xr, yr, 96, 96, "EasyEnemy"));
+		enemiesCount += 1; //увеличили счЄтчик врагов
+	}
 	while (window.isOpen())
 	{
 		float time = clock.getElapsedTime().asMicroseconds();
@@ -342,15 +345,12 @@ int main()
 				window.close();
 		}
 
-
 		p.update(time); //оживл€ем объект УpФ класса УPlayerФ
 		for (it = enemies.begin(); it != enemies.end(); it++) 
-       { 
-       (*it)->update(time); //запускаем метод update() 
-       }
+        { 
+			(*it)->update(time); //запускаем метод update() 
+		}
 		window.clear();
-
-
 /////////////////////////////–исуем карту/////////////////////
 		for (int i = 0; i < HEIGHT_MAP; i++)
 			for (int j = 0; j < WIDTH_MAP; j++)
@@ -363,10 +363,10 @@ int main()
 
 		window.draw(p.sprite);//рисуем спрайт объекта УpФ класса УPlayerФ
 		for (it = enemies.begin(); it != enemies.end(); it++) 
-           { 
-             if ((*it)->life) //если враги живы 
-             window.draw((*it)->sprite); //рисуем 
-           }
+        { 
+			if ((*it)->life) //если враги живы 
+			window.draw((*it)->sprite); //рисуем 
+        }
 		window.display();
 	}
 	return 0;
