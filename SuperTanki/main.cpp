@@ -289,7 +289,7 @@ void checkCollisionWithMap(float Dx, float Dy)//ф-ци€ проверки столкновений с ка
 		}
 	}
 };
-
+ 
 class Bullet :public Entity{//класс пули
 public:
 	int direction;//направление пули
@@ -340,6 +340,37 @@ public:
 		}
 	}
 };
+class Base :public Entity 
+{ 
+public: 
+Base(Image &image, float X, float Y, int W, int H, std::string Name) :Entity(image, X, Y, W, H, Name) 
+{ 
+x = X; 
+y = Y; 
+w = W; 
+h = H; 
+life = true; 
+sprite.setTextureRect(IntRect(0, 0, 51, 65)); 
+sprite.setPosition(x, y); 
+}; 
+void update(float time) {}; 
+}; 
+class Wall :public Entity 
+{ 
+public: 
+Wall(Image &image, float X, float Y, int W, int H, std::string Name) :Entity(image, X, Y, W, H, Name) 
+{ 
+x = X; 
+y = Y; 
+w = W; 
+h = H; 
+life = true; 
+sprite.setTextureRect(IntRect(160, 0, w, h)); 
+sprite.setPosition(x, y); 
+
+}; 
+void update(float time) {}; 
+};
 
 int main()
 {
@@ -364,14 +395,19 @@ int main()
 
 	Image BulletImage;//изображение дл€ пули
 	BulletImage.loadFromFile("images/bullet.png");//загрузили картинку в объект изображени€
+	Image BaseImage;//изображение дл€ пули 
+    BaseImage.loadFromFile("images/bird.png");//загрузили картинку в объект изображени€ 
 
 	Player p(heroImage, 1100, 70, 70, 70, "Player1");//объект класса игрока
+	Image StarImage; 
+    StarImage.loadFromFile("images/star.png");
+    Base b(BaseImage, 1150, 332, 71, 65, "Base");
 
 	std::list<Entity*>  enemies; //список врагов
 	std::list<Entity*>  Bullets; //список пуль
 	std::list<Entity*>::iterator it;
 	std::list<Entity*>::iterator bullet;
-
+	std::list<Entity*> Walls; //список стен
 
 	const int ENEMY_COUNT = 7; //максимальное количество врагов в игре ¬ј∆Ќќ!
 	int enemiesCount = 0; //текущее количество врагов в игре
@@ -385,6 +421,18 @@ int main()
 		enemies.push_back(new Enemy(easyEnemyImage, xr, yr, 96, 96, "EasyEnemy"));
 		enemiesCount += 1; //увеличили счЄтчик врагов
 	}
+	Walls.push_back(new Wall(map_image, 1184, 288, 32, 32, "Wall")); 
+    Walls.push_back(new Wall(map_image, 1152, 288, 32, 32, "Wall")); 
+    Walls.push_back(new Wall(map_image, 1120, 288, 32, 32, "Wall")); 
+    Walls.push_back(new Wall(map_image, 1088, 288, 32, 32, "Wall")); 
+    Walls.push_back(new Wall(map_image, 1088, 320, 32, 32, "Wall")); 
+    Walls.push_back(new Wall(map_image, 1088, 352, 32, 32, "Wall")); 
+    Walls.push_back(new Wall(map_image, 1088, 384, 32, 32, "Wall")); 
+    Walls.push_back(new Wall(map_image, 1088, 416, 32, 32, "Wall")); 
+    Walls.push_back(new Wall(map_image, 1120, 416, 32, 32, "Wall")); 
+    Walls.push_back(new Wall(map_image, 1152, 416, 32, 32, "Wall")); 
+    Walls.push_back(new Wall(map_image, 1184, 416, 32, 32, "Wall"));
+
 	while (window.isOpen())
 	{
 		float time = clock.getElapsedTime().asMicroseconds();
@@ -462,6 +510,28 @@ int main()
 			{
 				p.life = false;
 			}
+			if (b.getRect().intersects((*bullet)->getRect())) 
+{ 
+b.life = false; 
+p.life = false; 
+} 
+
+for (it = Walls.begin(); it != Walls.end(); ) 
+{ 
+if ((*bullet)->getRect().intersects((*it)->getRect())) 
+{ 
+it = Walls.erase(it); 
+(*bullet)->life = false; 
+} 
+else it++; 
+}
+for (it = enemies.begin(); it != enemies.end(); it++) 
+{ 
+if ((*it)->getRect().intersects(p.getRect())) 
+{ 
+p.life = false; 
+} 
+}
 		}
 		window.clear();
 /////////////////////////////–исуем карту/////////////////////
@@ -475,11 +545,13 @@ int main()
 			}
 
 		window.draw(p.sprite);//рисуем спрайт объекта УpФ класса УPlayerФ
+		window.draw(b.sprite);
 		for (it = enemies.begin(); it != enemies.end(); it++) 
         { 
 			if ((*it)->life) //если враги живы 
 			window.draw((*it)->sprite); //рисуем 
         }
+
 
 		//рисуем пули
 		for (it = Bullets.begin(); it != Bullets.end(); it++)
@@ -487,6 +559,10 @@ int main()
 			if ((*it)->life) //если пули живы
 				window.draw((*it)->sprite); //рисуем объекты
 		}
+		for (it = Walls.begin(); it != Walls.end(); it++) 
+{ 
+window.draw((*it)->sprite); 
+}
 		window.display();
 	}
 	return 0;
