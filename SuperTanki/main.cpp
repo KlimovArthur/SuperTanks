@@ -372,6 +372,22 @@ sprite.setPosition(x, y);
 void update(float time) {}; 
 };
 
+class Star :public Entity 
+{ 
+public: 
+Star(Image &image, float X, float Y, int W, int H, std::string Name) :Entity(image, X, Y, W, H, Name) 
+{ 
+x = X; 
+y = Y; 
+w = W; 
+h = H; 
+life = true; 
+sprite.setTextureRect(IntRect(0, 0, w, h)); 
+sprite.setPosition(x, y); 
+
+}; 
+void update(float time) {}; 
+};
 int main()
 {
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
@@ -387,6 +403,9 @@ int main()
 	Clock gameTimeClock;//переменна€ игрового времени, будем здесь хранить врем€ игры 
 	int gameTime = 0;//объ€вили игровое врем€, инициализировали.
 	int delay = 0;
+	bool winCheck = false; 
+    bool starCheck = false; 
+    int i = 0;
 	Image heroImage;
 	heroImage.loadFromFile("images/TankPlayer.png"); // загружаем изображение игрока
 
@@ -405,6 +424,10 @@ int main()
 	Player p(heroImage, 1100, 70, 70, 70, "Player1");//объект класса игрока
     Base b(BaseImage, 1150, 332, 71, 65, "Base");
 
+	Star *s = new Star(StarImage, 150, 510, 63, 44, "Star");
+
+	std::list<Entity*>::iterator it2;
+	std::list<Entity*>::iterator wall;
 	std::list<Entity*>  enemies; //список врагов
 	std::list<Entity*>  Bullets; //список пуль
 	std::list<Entity*>::iterator it;
@@ -527,14 +550,25 @@ int main()
 				} 
 				else it++; 
 			}
-			for (it = enemies.begin(); it != enemies.end(); it++) 
+		}
+
+		for (it = enemies.begin(); it != enemies.end(); it++) 
 			{ 
 				if ((*it)->getRect().intersects(p.getRect())) 
 				{ 
 					p.life = false; 
 				} 
 			}
-		}
+
+		        if (p.getRect().intersects(s->getRect()) && (starCheck == false)) 
+            { 
+        for (it = enemies.begin(); it != enemies.end(); it++) 
+            { 
+               (*it)->speed = 0; 
+            } 
+               delete s; 
+               starCheck = true; 
+            }
 		window.clear();
 /////////////////////////////–исуем карту/////////////////////
 		for (int i = 0; i < HEIGHT_MAP; i++)
@@ -548,6 +582,10 @@ int main()
 
 		window.draw(p.sprite);//рисуем спрайт объекта УpФ класса УPlayerФ
 		window.draw(b.sprite);
+		        if (starCheck == false) 
+            { 
+              window.draw(s->sprite); 
+            }
 		for (it = enemies.begin(); it != enemies.end(); it++) 
         { 
 			if ((*it)->life) //если враги живы 
