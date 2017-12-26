@@ -395,12 +395,14 @@ int main()
 
 	Image BulletImage;//изображение для пули
 	BulletImage.loadFromFile("images/bullet.png");//загрузили картинку в объект изображения
+
 	Image BaseImage;//изображение для пули 
     BaseImage.loadFromFile("images/bird.png");//загрузили картинку в объект изображения 
 
-	Player p(heroImage, 1100, 70, 70, 70, "Player1");//объект класса игрока
 	Image StarImage; 
     StarImage.loadFromFile("images/star.png");
+
+	Player p(heroImage, 1100, 70, 70, 70, "Player1");//объект класса игрока
     Base b(BaseImage, 1150, 332, 71, 65, "Base");
 
 	std::list<Entity*>  enemies; //список врагов
@@ -511,27 +513,27 @@ int main()
 				p.life = false;
 			}
 			if (b.getRect().intersects((*bullet)->getRect())) 
-{ 
-b.life = false; 
-p.life = false; 
-} 
+			{ 
+				b.life = false; 
+				p.life = false; 
+			} 
 
-for (it = Walls.begin(); it != Walls.end(); ) 
-{ 
-if ((*bullet)->getRect().intersects((*it)->getRect())) 
-{ 
-it = Walls.erase(it); 
-(*bullet)->life = false; 
-} 
-else it++; 
-}
-for (it = enemies.begin(); it != enemies.end(); it++) 
-{ 
-if ((*it)->getRect().intersects(p.getRect())) 
-{ 
-p.life = false; 
-} 
-}
+			for (it = Walls.begin(); it != Walls.end(); ) 
+			{ 
+				if ((*bullet)->getRect().intersects((*it)->getRect())) 
+				{ 
+					it = Walls.erase(it); 
+					(*bullet)->life = false; 
+				} 
+				else it++; 
+			}
+			for (it = enemies.begin(); it != enemies.end(); it++) 
+			{ 
+				if ((*it)->getRect().intersects(p.getRect())) 
+				{ 
+					p.life = false; 
+				} 
+			}
 		}
 		window.clear();
 /////////////////////////////Рисуем карту/////////////////////
@@ -560,9 +562,9 @@ p.life = false;
 				window.draw((*it)->sprite); //рисуем объекты
 		}
 		for (it = Walls.begin(); it != Walls.end(); it++) 
-{ 
-window.draw((*it)->sprite); 
-}
+		{ 
+			window.draw((*it)->sprite); 
+		}
 		window.display();
 	}
 	return 0;
