@@ -1,17 +1,18 @@
-#include <iostream> 
-#include <sstream>
-#include <SFML/Graphics.hpp>
+#include <iostream> //подключили библиотеку ввода и вывода
+#include <sstream> //подключили библиотеку для string
+#include <SFML/Graphics.hpp> //подключили SFML
 #include "map.h" //подключили код с картой
-#include <list>
-#include "classes.h"
-#include "ourclasses.h"
+#include <list> //подключили list
+#include "classes.h" //подключили классы Entity, Player, Enemy, Bullet
+#include "ourclasses.h" //подключили классы Base, Star, Wall
 
-using namespace sf;
+using namespace sf; 
 
 
 int main()
 {
-	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+	// Создаём окно с той же битовой глубиной пикселей, что и рабочий стол
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode(); 
 	sf::RenderWindow window(sf::VideoMode(1280, 704, desktop.bitsPerPixel), "SuperTanki");
 
 	Font font;//шрифт 
@@ -27,19 +28,19 @@ int main()
 	Sprite s_map;//создаём спрайт для карты
 	s_map.setTexture(map);//заливаем текстуру спрайтом
 
-	Clock clock;
+	Clock clock; //создаем объект Часы
 	Clock gameTimeClock;//переменная игрового времени, будем здесь хранить время игры 
 	int gameTime = 0;//объявили игровое время, инициализировали.
-	int delay = 0;
-	bool winCheck = false;
-	bool starCheck = false;
-	int i = 0;
+	int delay = 0; //задержка для стрельбы танков
+	bool winCheck = false; //переменная для фиксации победы
+	bool starCheck = false; //переменная для фиксации факта сбора звезды
+	int i = 0; //счётчик для заполнения контейнера врагами
 
 
-	Image heroImage;
+	Image heroImage; //создаем объект Image 
 	heroImage.loadFromFile("images/TankPlayer.png"); // загружаем изображение игрока
 
-	Image easyEnemyImage;
+	Image easyEnemyImage; //создаем объект Image
 	easyEnemyImage.loadFromFile("images/TankEnemy.png"); // загружаем изображение врага
 
 	Image BulletImage;//изображение для пули
@@ -48,37 +49,34 @@ int main()
 	Image BaseImage;//изображение для пули
 	BaseImage.loadFromFile("images/bird.png");//загрузили картинку в объект изображения
 
-	Image StarImage;
-	StarImage.loadFromFile("images/star.png");
+	Image StarImage; //создаем объект Image
+	StarImage.loadFromFile("images/star.png"); //загрузили картинку в объект изображения
 
 	Player p(heroImage, 1100, 70, 70, 70, "Player1");//объект класса игрока
 
-	Base b(BaseImage, 1150, 332, 71, 65, "Base");
+	Base b(BaseImage, 1150, 332, 71, 65, "Base"); //объект класса база
 
-	Star *s = new Star(StarImage, 150, 510, 63, 44, "Star");
+	Star *s = new Star(StarImage, 150, 510, 63, 44, "Star"); //объект класса звезда
 
 	std::list<Entity*>  enemies; //список врагов
 	std::list<Entity*>  Bullets; //список пуль
 	std::list<Entity*>  Walls; //список стен
-	std::list<Entity*>::iterator it; //итератор чтобы проходить по элементам списка
-	std::list<Entity*>::iterator it2;
-	std::list<Entity*>::iterator bullet;
-	std::list<Entity*>::iterator wall;
+	std::list<Entity*>::iterator it; //итератор, чтобы проходить по элементам списка
+	std::list<Entity*>::iterator bullet; //итератор, чтобы проходить по элементам списка пуль
+	std::list<Entity*>::iterator wall; //итератор, чтобы проходить по элементам списка стен
 
 	const int ENEMY_COUNT = 7;	//максимальное количество врагов в игре ВАЖНО!
-	int enemiesCount = 0;	//текущее количество врагов в игре
 
 	//Заполняем список объектами врагами
 	for (int i = 0; i < ENEMY_COUNT; i++)
 	{
 		float xr = 150 + rand() % 100;
 		float yr = 480;
-		 // случайная координата врага на поле игры по оси “x”
+		// случайная координата врага на поле игры по оси “x”
 	
 
 		//создаем врагов и помещаем в список
 		enemies.push_back(new Enemy(easyEnemyImage, xr, yr, 96, 96, "EasyEnemy"));
-		enemiesCount += 1; //увеличили счётчик врагов
 	}
 
 	Walls.push_back(new Wall(map_image, 1184, 288, 32, 32, "Wall"));
@@ -93,16 +91,15 @@ int main()
 	Walls.push_back(new Wall(map_image, 1152, 416, 32, 32, "Wall"));
 	Walls.push_back(new Wall(map_image, 1184, 416, 32, 32, "Wall"));
 
-	int createObjectForMapTimer = 0;//Переменная под время для генерирования камней
 
 	while (window.isOpen())
 	{
-		float time = clock.getElapsedTime().asMicroseconds();
+		float time = clock.getElapsedTime().asMicroseconds(); //Прошедшее время с момента запуска часов
 
 		if (p.life) gameTime = gameTimeClock.getElapsedTime().asMilliseconds();//игровое время в 
 		//секундах идёт вперед, пока жив игрок. Перезагружать как time его не надо. 
 		//оно не обновляет логику игры
-		clock.restart();
+		clock.restart(); //перезапуск часов
 		time = time / 800;
 
 		sf::Event event;
@@ -111,7 +108,6 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-
 			//стреляем по нажатию клавиши "Space"
 			if ((event.type == sf::Event::KeyPressed) && (p.life == true))
 			{
@@ -171,18 +167,18 @@ int main()
 				}
 				else it++;
 			}
-
+			//пересечение пуль врага с игроком
 			if (p.getRect().intersects((*bullet)->getRect()) && ((*bullet)->check == false))
 			{
 				p.life = false;
 			}
-
+			//пересечение пуль с базой
 			if (b.getRect().intersects((*bullet)->getRect()))
 			{
 				b.life = false;
 				p.life = false;
 			}
-
+			//пересечение со стенами
 			for (it = Walls.begin(); it != Walls.end(); )
 			{
 				if ((*bullet)->getRect().intersects((*it)->getRect()))
@@ -194,7 +190,7 @@ int main()
 			}
 		}
 
-
+		//пересечение врага и игрока
 		for (it = enemies.begin(); it != enemies.end(); it++) 
 		{
 			if ((*it)->getRect().intersects(p.getRect()))
@@ -204,7 +200,7 @@ int main()
 		}
 
 		
-
+	    //пересечние игрока со звездой
 		if (p.getRect().intersects(s->getRect()) && (starCheck == false))
 		{
 			for (it = enemies.begin(); it != enemies.end(); it++) 
@@ -225,12 +221,14 @@ int main()
 			s_map.setPosition(j * 32, i * 32);
 			window.draw(s_map);
 		}
+		//если игрок мертв или база уничтожена
 		if (((p.life == false) || (b.life == false)) && (winCheck == false))
 		{
 				text.setString("You lost");//задаем строку тексту
 				text.setPosition(330 ,250);//задаем позицию текста
 				window.draw(text);//рисуем этот текст
 		}
+		//если список пустй
 		if (enemies.empty())
 		{
 				winCheck = true;
@@ -240,7 +238,8 @@ int main()
 		}
 
 		window.draw(p.sprite);//рисуем спрайт объекта “p” класса “Player”
-		window.draw(b.sprite);
+		window.draw(b.sprite);//рисуес спрайт объекта b класса Base
+
 		if (starCheck == false)
 		{
 			window.draw(s->sprite);
@@ -266,5 +265,8 @@ int main()
 
 		window.display();
 	} 
+	enemies.clear();//очищаем память
+	Bullets.clear();
+	Walls.clear();
 	return 0;
 }
