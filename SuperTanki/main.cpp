@@ -1,17 +1,26 @@
-#include <iostream> 
-#include <sstream>
-#include <SFML/Graphics.hpp>
+#include <iostream> //подключили библиотеку ввода и вывода
+#include <sstream> //подключили библиотеку для string
+#include <SFML/Graphics.hpp> //подключили SFML
 #include "map.h" //подключили код с картой
-#include <list>
+#include <list> //подключили list
+#include "classes.h" //подключили классы Entity, Player, Enemy, Bullet
+#include "ourclasses.h" //подключили классы Base, Star, Wall
 
-
-using namespace sf;
+using namespace sf; 
 
 
 int main()
 {
-	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+	// Создаём окно с той же битовой глубиной пикселей, что и рабочий стол
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode(); 
 	sf::RenderWindow window(sf::VideoMode(1280, 704, desktop.bitsPerPixel), "SuperTanki");
+
+	Font font;//шрифт 
+	font.loadFromFile("xenoa.ttf");//передаем нашему шрифту файл шрифта
+	Text text("", font, 180);//создаем объект текст
+	text.setColor(Color::Red);//покрасили текст в красный	
+	text.setStyle(Text::Bold);//жирный текст.
+
 	Image map_image;//объект изображения для карты
 	map_image.loadFromFile("images/map.png");//загружаем файл для карты
 	Texture map;//текстура карты
@@ -19,17 +28,78 @@ int main()
 	Sprite s_map;//создаём спрайт для карты
 	s_map.setTexture(map);//заливаем текстуру спрайтом
 
-	Clock clock;
+	Clock clock; //создаем объект Часы
 	Clock gameTimeClock;//переменная игрового времени, будем здесь хранить время игры 
 	int gameTime = 0;//объявили игровое время, инициализировали.
+	int delay = 0; //задержка для стрельбы танков
+	bool winCheck = false; //переменная для фиксации победы
+	bool starCheck = false; //переменная для фиксации факта сбора звезды
+	int i = 0; //счётчик для заполнения контейнера врагами
 
+
+	Image heroImage; //создаем объект Image 
+	heroImage.loadFromFile("images/TankPlayer.png"); // загружаем изображение игрока
+
+	Image easyEnemyImage; //создаем объект Image
+	easyEnemyImage.loadFromFile("images/TankEnemy.png"); // загружаем изображение врага
+
+	Image BulletImage;//изображение для пули
+	BulletImage.loadFromFile("images/bullet.png");//загрузили картинку в объект изображения
+
+	Image BaseImage;//изображение для пули
+	BaseImage.loadFromFile("images/bird.png");//загрузили картинку в объект изображения
+
+	Image StarImage; //создаем объект Image
+	StarImage.loadFromFile("images/star.png"); //загрузили картинку в объект изображения
+
+	Player p(heroImage, 1100, 70, 70, 70, "Player1");//объект класса игрока
+
+	Base b(BaseImage, 1150, 332, 71, 65, "Base"); //объект класса база
+
+	Star *s = new Star(StarImage, 150, 510, 63, 44, "Star"); //объект класса звезда
+
+	std::list<Entity*>  enemies; //список врагов
+	std::list<Entity*>  Bullets; //список пуль
+	std::list<Entity*>  Walls; //список стен
+	std::list<Entity*>::iterator it; //итератор, чтобы проходить по элементам списка
+	std::list<Entity*>::iterator bullet; //итератор, чтобы проходить по элементам списка пуль
+	std::list<Entity*>::iterator wall; //итератор, чтобы проходить по элементам списка стен
+
+	const int ENEMY_COUNT = 7;	//максимальное количество врагов в игре ВАЖНО!
+
+	//Заполняем список объектами врагами
+	for (int i = 0; i < ENEMY_COUNT; i++)
+	{
+		float xr = 150 + rand() % 100;
+		float yr = 480;
+		// случайная координата врага на поле игры по оси “x”
+	
+
+		//создаем врагов и помещаем в список
+		enemies.push_back(new Enemy(easyEnemyImage, xr, yr, 96, 96, "EasyEnemy"));
+	}
+
+	Walls.push_back(new Wall(map_image, 1184, 288, 32, 32, "Wall"));
+	Walls.push_back(new Wall(map_image, 1152, 288, 32, 32, "Wall"));
+	Walls.push_back(new Wall(map_image, 1120, 288, 32, 32, "Wall"));
+	Walls.push_back(new Wall(map_image, 1088, 288, 32, 32, "Wall"));
+	Walls.push_back(new Wall(map_image, 1088, 320, 32, 32, "Wall"));
+	Walls.push_back(new Wall(map_image, 1088, 352, 32, 32, "Wall"));
+	Walls.push_back(new Wall(map_image, 1088, 384, 32, 32, "Wall"));
+	Walls.push_back(new Wall(map_image, 1088, 416, 32, 32, "Wall"));
+	Walls.push_back(new Wall(map_image, 1120, 416, 32, 32, "Wall"));
+	Walls.push_back(new Wall(map_image, 1152, 416, 32, 32, "Wall"));
+	Walls.push_back(new Wall(map_image, 1184, 416, 32, 32, "Wall"));
 
 
 	while (window.isOpen())
 	{
-		float time = clock.getElapsedTime().asMicroseconds();
+		float time = clock.getElapsedTime().asMicroseconds(); //Прошедшее время с момента запуска часов
 
-		clock.restart();
+		if (p.life) gameTime = gameTimeClock.getElapsedTime().asMilliseconds();//игровое время в 
+		//секундах идёт вперед, пока жив игрок. Перезагружать как time его не надо. 
+		//оно не обновляет логику игры
+		clock.restart(); //перезапуск часов
 		time = time / 800;
 
 		sf::Event event;
@@ -38,7 +108,110 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
+			//стреляем по нажатию клавиши "Space"
+			if ((event.type == sf::Event::KeyPressed) && (p.life == true))
+			{
+				if ((event.key.code == sf::Keyboard::Space))
+				{
+					Bullets.push_back(new Bullet(BulletImage, p.x, p.y, 16, 16, "Bullet", p.state, true));
+					
+				}
+			}
+
 		}
+
+		p.update(time); //оживляем объект “p” класса “Player” 
+
+		//оживляем врагов
+		for (it = enemies.begin(); it != enemies.end(); it++)
+		{
+			(*it)->update(time); //запускаем метод update()
+		}
+		
+		delay = delay + 1;
+
+		if (delay == 500)
+		{
+			for (it = enemies.begin(); it != enemies.end(); it++)
+			{
+				if (rand() % 2 == 0)
+				{
+					Bullets.push_back(new Bullet(BulletImage, (*it)->x, (*it)->y, 16, 16, "Bullet", (*it)->state, false));
+				}
+			}
+			delay = 0;
+		}
+		//оживляем пули
+		for (it = Bullets.begin(); it != Bullets.end(); it++)
+		{
+			(*it)->update(time); //запускаем метод update()
+		}
+		//Проверяем список на наличие "мертвых" пуль и удаляем их
+		for (it = Bullets.begin(); it != Bullets.end(); )//говорим что проходимся от начала до конца
+		{// если этот объект мертв, то удаляем его
+			if ((*it)-> life == false)	
+			{ 
+				it = Bullets.erase(it); 
+			} 
+			else  it++;//и идем курсором (итератором) к след объекту.		
+		}
+
+		for (bullet = Bullets.begin();  bullet!= Bullets.end(); bullet++)
+		{
+			for (it = enemies.begin(); it != enemies.end(); )
+			{//бежим по списку врагов
+				if (((*bullet)->getRect().intersects((*it)->getRect())) && ((*it)->name == "EasyEnemy") && ((*bullet)->check == true))
+				{
+					it = enemies.erase(it);
+					(*bullet)->life = false;
+				}
+				else it++;
+			}
+			//пересечение пуль врага с игроком
+			if (p.getRect().intersects((*bullet)->getRect()) && ((*bullet)->check == false))
+			{
+				p.life = false;
+			}
+			//пересечение пуль с базой
+			if (b.getRect().intersects((*bullet)->getRect()))
+			{
+				b.life = false;
+				p.life = false;
+			}
+			//пересечение со стенами
+			for (it = Walls.begin(); it != Walls.end(); )
+			{
+				if ((*bullet)->getRect().intersects((*it)->getRect()))
+				{
+					it = Walls.erase(it);
+					(*bullet)->life = false;
+				}
+				else it++;
+			}
+		}
+
+		//пересечение врага и игрока
+		for (it = enemies.begin(); it != enemies.end(); it++) 
+		{
+			if ((*it)->getRect().intersects(p.getRect()))
+			{
+				p.life = false;
+			}
+		}
+
+		
+	    //пересечние игрока со звездой
+		if (p.getRect().intersects(s->getRect()) && (starCheck == false))
+		{
+			for (it = enemies.begin(); it != enemies.end(); it++) 
+			{
+				(*it)->speed = 0;
+			}
+			delete s;
+			starCheck = true;
+		}
+
+	window.clear();
 /////////////////////////////Рисуем карту/////////////////////
 	for (int i = 0; i < HEIGHT_MAP; i++)
 		for (int j = 0; j < WIDTH_MAP; j++)
@@ -48,7 +221,52 @@ int main()
 			s_map.setPosition(j * 32, i * 32);
 			window.draw(s_map);
 		}
+		//если игрок мертв или база уничтожена
+		if (((p.life == false) || (b.life == false)) && (winCheck == false))
+		{
+				text.setString("You lost");//задаем строку тексту
+				text.setPosition(330 ,250);//задаем позицию текста
+				window.draw(text);//рисуем этот текст
+		}
+		//если список пустй
+		if (enemies.empty())
+		{
+				winCheck = true;
+				text.setString("You won");//задаем строку тексту
+				text.setPosition(340 ,250);//задаем позицию текста
+				window.draw(text);//рисуем этот текст
+		}
+
+		window.draw(p.sprite);//рисуем спрайт объекта “p” класса “Player”
+		window.draw(b.sprite);//рисуес спрайт объекта b класса Base
+
+		if (starCheck == false)
+		{
+			window.draw(s->sprite);
+		}
+		//рисуем врагов
+		for (it = enemies.begin(); it != enemies.end(); it++)
+		{
+			if ((*it)->life) //если враги живы
+			window.draw((*it)->sprite); //рисуем 
+		}
+
+		//рисуем пули
+		for (it = Bullets.begin(); it != Bullets.end(); it++)
+		{
+			if ((*it)->life) //если пули живы
+				window.draw((*it)->sprite); //рисуем объекты
+		}
+
+		for (it = Walls.begin(); it != Walls.end(); it++)
+		{
+			window.draw((*it)->sprite);
+		}
+
 		window.display();
-	}
+	} 
+	enemies.clear();//очищаем память
+	Bullets.clear();
+	Walls.clear();
 	return 0;
 }
