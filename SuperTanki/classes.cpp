@@ -163,7 +163,7 @@ void Enemy::checkCollisionWithMap(float Dx, float Dy)//ф-ция проверки столкновен
 	for (int i = y / 32; i < (y + h) / 32; i++)//проходимся по элементам карты
 		for (int j = x / 32; j<(x + w) / 32; j++)
 		{
-			if ((TileMap[i][j] == '0') || (TileMap[i][j] == 'e'))//если элемент - тайлик земли
+			if ((TileMap[i][j] == '0') || (TileMap[i][j] == 'e'))//если элемент - тайлик стены
 			{
 				if (Dy > 0) 
 				{
