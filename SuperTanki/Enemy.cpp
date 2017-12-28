@@ -16,7 +16,7 @@ Enemy::Enemy(Image &image, float X, float Y, int W, int H, std::string Name) :En
 		sprite.setTextureRect(IntRect(0, 0, w, h));
 		direction = rand() % (3); //Направление движения врага задаём случайным образом
 		//через генератор случайных чисел
-		speed = 0.2;//даем скорость.этот объект всегда двигается
+		speed = 0.1;//даем скорость.этот объект всегда двигается
 		dx = speed;
 		dy = speed;
 	}

@@ -1,12 +1,39 @@
-﻿Построение начато 28.12.2017 16:35:36.
+﻿Построение начато 28.12.2017 18:59:26.
      1>Проект "C:\Users\Arthur\Desktop\game\SuperTanks\SuperTanki\SuperTanki.vcxproj" в узле 2 (целевые объекты build).
      1>InitializeBuildStatus:
          Создание "Debug\SuperTanki.unsuccessfulbuild", так как было задано "AlwaysCreate".
        ClCompile:
-         Для всех выходных данных обновления не требуется.
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Arthur\Desktop\game\SuperTanks\SFML-2.3.2\include" /I"C:\Users\Arthur\Desktop\SuperTanks\SuperTanks\SFML-2.3.2\include" /I"C:\Users\Ivan\Desktop\Учеба17-18\Технология программирования\Проект\SuperTanks\SFML-2.3.2\include" /I"C:\Users\pcc\Desktop\Tanki\SuperTanks\SFML-2.3.2\include" /ZI /nologo /W3 /WX- /Od /Oy- /D SFML_DYNAMIC /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Enemy.cpp
+         Enemy.cpp
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(19): warning C4305: =: усечение из "double" к "float"
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(27): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(28): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(34): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(34): warning C4305: =: усечение из "double" к "float"
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(39): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(39): warning C4305: =: усечение из "double" к "float"
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(44): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(44): warning C4305: =: усечение из "double" к "float"
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(49): warning C4244: =: преобразование "int" в "float", возможна потеря данных
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(49): warning C4305: =: усечение из "double" к "float"
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(68): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(78): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(88): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+     1>c:\users\arthur\desktop\game\supertanks\supertanki\enemy.cpp(98): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
        Link:
-         Для всех выходных данных обновления не требуется.
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Arthur\Desktop\game\SuperTanks\Debug\SuperTanki.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Arthur\Desktop\game\SuperTanks\SFML-2.3.2\lib" /LIBPATH:"C:\Users\Arthur\Desktop\SuperTanks\SuperTanks\SFML-2.3.2\lib" /LIBPATH:"C:\Users\Ivan\Desktop\Учеба17-18\Технология программирования\Проект\SuperTanks\SFML-2.3.2\lib" /LIBPATH:"C:\Users\pcc\Desktop\Tanki\SuperTanks\SFML-2.3.2\lib" "sfml-audio-d.lib" "sfml-network-d.lib" "sfml-graphics-d.lib" "sfml-system-d.lib" "sfml-window-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\SuperTanki.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Arthur\Desktop\game\SuperTanks\Debug\SuperTanki.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Arthur\Desktop\game\SuperTanks\Debug\SuperTanki.lib" /MACHINE:X86 Debug\Base.obj
+         Debug\Bullet.obj
+         Debug\Enemy.obj
+         Debug\Entity.obj
+         Debug\main.obj
+         Debug\map.obj
+         Debug\Player.obj
+         Debug\Star.obj
+         Debug\Wall.obj
+     1>Base.obj : warning LNK4075: не учитывается "/EDITANDCONTINUE" из-за спецификации "/INCREMENTAL:NO"
          SuperTanki.vcxproj -> C:\Users\Arthur\Desktop\game\SuperTanks\Debug\SuperTanki.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\Arthur\Desktop\game\SuperTanks\Debug\SuperTanki.exe;#1" /manifest Debug\SuperTanki.exe.intermediate.manifest
        FinalizeBuildStatus:
          Файл "Debug\SuperTanki.unsuccessfulbuild" удаляется.
          Обращение к "Debug\SuperTanki.lastbuildstate".
@@ -14,4 +41,4 @@
 
 Построение успешно завершено.
 
-Затраченное время: 00:00:00.03
+Затраченное время: 00:00:00.87
