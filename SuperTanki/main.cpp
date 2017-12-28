@@ -275,5 +275,9 @@ int main()
 	enemies.clear();//очищаем память
 	Bullets.clear();
 	Walls.clear();
+	if (starCheck == false)
+	{
+		delete s;
+	}
 	return 0;
 }
