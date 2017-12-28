@@ -10,6 +10,7 @@
 #include "Base.h"
 #include "Wall.h"
 #include "Star.h"
+#include <ctime>
 
 using namespace sf; 
 
@@ -41,6 +42,7 @@ int main()
 	bool starCheck = false; //переменная для фиксации факта сбора звезды
 	int i = 0; //счётчик для заполнения контейнера врагами
 
+	srand ( time(NULL) );
 
 	Image heroImage; //создаем объект Image 
 	heroImage.loadFromFile("images/TankPlayer.png"); // загружаем изображение игрока
