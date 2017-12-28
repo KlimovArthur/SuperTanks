@@ -3,8 +3,13 @@
 #include <SFML/Graphics.hpp> //подключили SFML
 #include "map.h" //подключили код с картой
 #include <list> //подключили list
-#include "classes.h" //подключили классы Entity, Player, Enemy, Bullet
-#include "ourclasses.h" //подключили классы Base, Star, Wall
+#include "Entity.h"
+#include "Player.h"
+#include "Enemy.h"
+#include "Bullet.h"
+#include "Base.h"
+#include "Wall.h"
+#include "Star.h"
 
 using namespace sf; 
 
