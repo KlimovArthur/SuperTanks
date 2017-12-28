@@ -112,15 +112,3 @@ void Enemy::update(float time)
 			}
 		}
 	}
-
-Bullet::Bullet(Image &image, float X, float Y, int W, int H, std::string  Name, int dir, bool check2) :Entity(image, X, Y, W, H, Name)
-{
-	x = X+20;
-	y = Y+5;
-	direction = dir;
-	speed = 0.8;
-	w = h = 16;
-	life = true;
-	check = check2;
-		//выше инициализация в конструкторе
-};
